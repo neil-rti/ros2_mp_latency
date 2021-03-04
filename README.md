@@ -72,7 +72,23 @@ This will launch a test configuration of: HEAD-->(5 nodes in series)-->TAIL.
 
 # Output Data Files
 3 File types are produced, all are in .csv (comma-separated values) format for easy opening with a spreadsheet program.  
-This enables easy sorting and grouping of results, and visualization of latency distribution histograms, such as:  
+
+## test_(options)_log.csv
+This file is a sequential log with the results of each test sample, written as it is received.  
+
+## test_(options)_histo.csv  
+This file contains a binned histogram summary of the test run, written at test completion.  
+The resolution (width) of the bins are set at compile time by variables in IpcTail.cpp.  
+Default values are: 1uS collection bin width, 10uS print bin width.  
+The histogram view offers easy visualization of the latency distribution of your system, such as:    
 
 ![Latency Histogram](ros2_histo_3node_1kb.png)
 
+## statsAll.csv  
+This file contains a statistical summary of the latency of each test run.  
+The file is appended at each test completion with test conditions and statistics (min/mean/max/std.dev/count)
+derived from the data in the histogram collection bins.  
+The data includes the individual latencies of each pub:sub pair in the test, and a sum of all latencies
+for an end-to-end total.  
+Test conditions are placed in separate columns to enable sorting and filtering in a spreadsheet, making for
+easier summary comparisons (note that benchmark tests produce a large amount of data).
