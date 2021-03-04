@@ -9,11 +9,11 @@
 using namespace std::chrono_literals;
 using std::placeholders::_1;
 
-class IpcNode : public rclcpp::Node
+class IpcThru : public rclcpp::Node
 {
   public:
     // TEST node args testDuration, useReliable, myNodeId, fromTopic, toTopic
-    IpcNode(uint32_t testDuration, bool useReliable, uint32_t myNodeId, 
+    IpcThru(uint32_t testDuration, bool useReliable, uint32_t myNodeId, 
       std::string fromTopic, std::string toTopic)
     : Node("ipc_node")
     {
@@ -27,18 +27,18 @@ class IpcNode : public rclcpp::Node
       if(useReliable) {
         publisher_ = this->create_publisher<MP_DATA_TYPE>(toTopic, rclcpp::QoS(1).reliable());
         subscription_ = this->create_subscription<MP_DATA_TYPE>(
-          fromTopic, rclcpp::QoS(1).reliable(), std::bind(&IpcNode::topic_callback, this, _1));
+          fromTopic, rclcpp::QoS(1).reliable(), std::bind(&IpcThru::topic_callback, this, _1));
       }
       else {
         publisher_ = this->create_publisher<MP_DATA_TYPE>(toTopic, rclcpp::QoS(1).best_effort());
         subscription_ = this->create_subscription<MP_DATA_TYPE>(
-          fromTopic, rclcpp::QoS(1).best_effort(), std::bind(&IpcNode::topic_callback, this, _1));
+          fromTopic, rclcpp::QoS(1).best_effort(), std::bind(&IpcThru::topic_callback, this, _1));
       }
 
       // create timer to check when to quit
       timer_ = this->create_wall_timer(
           std::chrono::milliseconds(654),
-          std::bind(&IpcNode::timer_callback, this));
+          std::bind(&IpcThru::timer_callback, this));
 
     }
 
@@ -132,7 +132,7 @@ int main(int argc, char * argv[])
   }
 
   rclcpp::init(argc, argv);
-  rclcpp::spin(std::make_shared<IpcNode>(testDuration, useReliable, myNodeId, fromTopic, toTopic));
+  rclcpp::spin(std::make_shared<IpcThru>(testDuration, useReliable, myNodeId, fromTopic, toTopic));
   rclcpp::shutdown();
   return 0;
 }

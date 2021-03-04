@@ -22,15 +22,15 @@ include_directories(include)
 add_executable(ipchead src/IpcHead.cpp)
 ament_target_dependencies(ipchead rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
 
-add_executable(ipcnode src/IpcNode.cpp)
-ament_target_dependencies(ipcnode rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
+add_executable(ipcthru src/IpcThru.cpp)
+ament_target_dependencies(ipcthru rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
 
 add_executable(ipctail src/IpcTail.cpp)
 ament_target_dependencies(ipctail rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
 
 install(TARGETS 
   ipchead
-  ipcnode
+  ipcthru
   ipctail
   DESTINATION lib/${PROJECT_NAME}
 )

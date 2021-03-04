@@ -5,19 +5,21 @@ This is a configurable ROS2 system latency test, built using small ROS2 componen
 
 This test will build 3 component types:
  * ipchead: Publishes the build-selected data type to a named topic, at a given rate & reliability.  The sample is timestamped before publication.
- * ipcnode: Receives a sample from a named topic, adds timestamps to sample then re-publishes on a named topic.
+ * ipcthru: Receives a sample from a named topic, adds timestamps to sample then re-publishes on a named topic.
  * ipctail: Receives a sample from a named topic, timestamps then computes latency at each step, writes results to:
  ** A sequential log file for that test run.
  ** A histogram file for that test run.
  ** Adds a statistical summary for that test run to a common file.
 
- Given the above components, many different test configurations can be devised and automated using ROS2 Launch files and shell scripts or batch files, such as:
+Given the above components, many different test configurations can be devised and automated using ROS2 Launch files and shell scripts or batch files; 1-to-1, 1-to-many, etc.:
 
-  * HEAD-->NODE1-->NODE2->->->NODE(N)-->TAIL
-  * HEAD-=>(N NODES in parallel)==>(N TAILS)
-  * HEAD-=>(N NODES in parallel)=-->TAIL(common)
+![In-series test configurations](test_serial_ros2.png)  
+msg passing latency is measured end-to-end and at every step.
+
+![Parallel test configurations](test_parallel_ros2.png)
+Fan-out and Fan-in conditions may also be measured for latency.  
   
-  Components may be on the same machine or distributed throughout your system.
+Components may be on the same machine or distributed throughout your system, and tested with any available ROS2 RMW implementation.  
 
 # To Build:
 Build as you would any ROS2 component:
@@ -39,7 +41,7 @@ Runs as normal ROS2 components, with command-line arguments (and default values)
  ** `myNodeId` ID number for this HEAD node (0)
  ** `toTopic` Named topic to publish ("fromHead")
 
- * `ipcnode`: 5 args:
+ * `ipcthru`: 5 args:
  ** `testDuration` in seconds, to run the test then exit (default: 60)
  ** `relType` reliability, "REL" or "BE" (best effort)
  ** `myNodeId` ID number for this node (1)
@@ -58,7 +60,7 @@ Runs as normal ROS2 components, with command-line arguments (and default values)
 If each component is launched on a ROS2 command line with no arguments, such as:  
 ```bash
   ros2 run mp_latency ipchead &
-  ros2 run mp_latency ipcnode &
+  ros2 run mp_latency ipcthru &
   ros2 run mp_latency ipctail &
 ```
 it will run a 60-second latency test and write the results to files.
