@@ -31,10 +31,17 @@ Build as you would any ROS2 component:
   colcon build --symlink-install
 ```
 Note that the data type used in the test is a build-time option, selected in the file `mp_latency/include/IpcTestDefs.hpp`.  
-Edit this value and rebuild to test with a different size data sample (100 bytes to 500kB).
+Edit this value and rebuild to test with a different size data sample (100 bytes to 500kB).  
+Note also that RMW is selected by ROS2 using the environment variable `RMW_IMPLEMENTATION`
+-- be sure to set this variable to select the RMW to be tested.  
 
 # To Run:
-Runs as normal ROS2 components, with command-line arguments (and default values) for each:
+Runs as normal ROS2 components, with command-line arguments.  
+Because this runs in separate processes, it is recommended to use ROS2 launch files or a shell
+script to automate the test (example launch files are included, see below).  
+
+The command line arguements (and default values) for each application are:  
+
 **ipchead**: 5 args:
  - `testDuration` in seconds, to run the test then exit (default: 60)
  - `relType` reliability, "REL" or "BE" (best effort)
