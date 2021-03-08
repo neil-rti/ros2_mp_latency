@@ -22,7 +22,6 @@ class IpcHead : public rclcpp::Node
       my_node_id = myNodeId;
       pub_delay_ms = (uint32_t)(1000.0f / pubFreq);
 
-
       if(useReliable) {
         publisher_ = this->create_publisher<MP_DATA_TYPE>(toTopic, rclcpp::QoS(1).reliable());
       }
@@ -33,9 +32,9 @@ class IpcHead : public rclcpp::Node
       send_msg_.header.frequency = pubFreq;
 
       // init the data array with random
-//      for(int i=0 ; i<MP_DATA_SIZE ; i++) {
-//        send_msg_.data[i] = (unsigned char)(rand() & 0xff);
-//      }
+      for(int i=0 ; i<MP_DATA_SIZE ; i++) {
+        send_msg_.data[i] = (unsigned char)(rand() & 0xff);
+      }
 
       timespec tstart;
       tspec_get(&tstart);

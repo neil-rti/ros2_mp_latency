@@ -6,13 +6,13 @@
 # for example (60 + 5) * 3 * 3 * 5 * 2 * 9 = 52650 seconds, or 14.6 hours.
 
 DDS_BACKENDS='rmw_connextdds rmw_fastrtps_cpp rmw_cyclonedds_cpp'
-F_PUBLISHER_SET='1 10 100'
+F_PUBLISHER_SET='10'
 MSG_SIZE_SUFFIX_SET='100b 1kb 10kb 100kb 500kb'
 QOS_RELIABILITY_SET='BE REL'
-NODE_THRU_COUNT_SET='0 1 2 3 4 5 10 15 20'
-TEST_DURATION=60
+NODE_THRU_COUNT_SET='0'
+TEST_DURATION=10
 TEST_TOPIC_NAME='pt_profile_topic_'
-TEST_CONFIG_NAME='h-sn-t'
+TEST_CONFIG_NAME='h-t'
 
 # the test will create data files in the current directory 
 for QOS_RELIABILITY in $QOS_RELIABILITY_SET

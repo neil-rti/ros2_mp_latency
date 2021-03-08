@@ -3,7 +3,8 @@ from launch_ros.actions import Node
 import os
 
 # This is used for configuring serial-chain tests with 0--N nodes.
-# Env var are used to set:    RMW, topicNameRoot, thruNodesCount, testDuration, relyType, pubFreq, cfgName
+# Env var are used to set:
+#   RMW, topicNameRoot, thruNodesCount, testDuration, relyType, pubFreq, cfgName, dataSizeSuffix
 rmw_type = 'rmw_connextdds'                 # rmw selection, default to Connext pro
 if 'RMW_IMPLEMENTATION' in os.environ:
     rmw_type = os.environ['RMW_IMPLEMENTATION']
@@ -12,7 +13,6 @@ topic_base = 'pt_profile_topic'             # root of the topic names used in te
 if 'RTI_MPL_TOPIC_NAME' in os.environ:
     topic_base = os.environ['RTI_MPL_TOPIC_NAME']
 
-# Cmdline args are used for:  thruNodesCount, testDuration, relyType, pubFreq, cfgName
 thru_nodes_count = '1'
 if 'RTI_MPL_THRU_NODES' in os.environ:
     thru_nodes_count = os.environ['RTI_MPL_THRU_NODES']
@@ -33,18 +33,26 @@ config_name = 'default'
 if 'RTI_MPL_CONFIG_NAME' in os.environ:
     config_name = os.environ['RTI_MPL_CONFIG_NAME']
 
+size_suffix = '100b'
+if 'RTI_MPL_SIZE_SUFFIX' in os.environ:
+    size_suffix = os.environ['RTI_MPL_SIZE_SUFFIX']
+
+exe_head = 'ipchead_' + size_suffix
+exe_thru = 'ipcthru_' + size_suffix
+exe_tail = 'ipctail_' + size_suffix
+
+
 # build the test per the args
 def generate_launch_description():
     ld = LaunchDescription()
     
     # add the tail node
     total_nodes = int(thru_nodes_count) + 2
-    # tail_node_topic_name = '{}_{}_{}'.format(topic_base, str(total_nodes-1), str(total_nodes))
     tail_node_topic_name = topic_base + '_' + str(total_nodes-2) + '_' + str(total_nodes-1)
     tail_node = Node(
         package='mp_latency',
         namespace='ipc_lat',
-        executable='ipctail',
+        executable=exe_tail,
         output='screen',
         arguments=[test_duration, rely_type, pub_frequency, str(total_nodes), tail_node_topic_name, rmw_type, config_name],
         name='tail'
@@ -61,7 +69,7 @@ def generate_launch_description():
             Node(
                 package='mp_latency',
                 namespace='ipc_lat',
-                executable='ipcthru',
+                executable=exe_thru,
                 output='screen',
                 arguments=[test_duration, rely_type, str(n), from_node_topic_name, to_node_topic_name],
                 name=this_node_name
@@ -74,7 +82,7 @@ def generate_launch_description():
         Node(
             package='mp_latency',
             namespace='ipc_lat',
-            executable='ipchead',
+            executable=exe_head,
             output='screen',
             arguments=[test_duration, rely_type, pub_frequency, '0', head_node_topic_name, rmw_type],
             name='head'

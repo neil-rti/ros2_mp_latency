@@ -8,7 +8,10 @@
 
 using namespace std::chrono_literals;
 using std::placeholders::_1;
-#define HISTO_MAX  (100000)    // at 1uS per bin
+#define HISTO_BIN_NS          (1000)      // use 1uS bin sizes
+#define HISTO_MAX             (100000)    // at 1uS per bin = 100mS
+#define HISTO_BIN_PRINT       (10)        // at 1uS per bin = 10uS print resolution
+#define SKIP_FIRST_N_SAMPLES  (5)         // skip first 5 samples for startup noise reduction
 
 class IpcTail : public rclcpp::Node
 {
@@ -27,14 +30,15 @@ class IpcTail : public rclcpp::Node
       timespec tstart;
       tspec_get(&tstart);
       start_time_seconds = tstart.tv_sec;
-      histo_bin_count = HISTO_MAX;     // bins total
-      histo_bin_width_ns = 1000;    // histo bin width in nS
-      histo_bin_printres = 10;      // 10 bin resolution when reporting
-      skip_first_n_samples = 5;
+      histo_bin_count = HISTO_MAX;                  // bins total
+      histo_bin_width_ns = HISTO_BIN_NS;            // histo bin width in nS
+      histo_bin_printres = HISTO_BIN_PRINT;         // 10 bin resolution when reporting
+      skip_first_n_samples = SKIP_FIRST_N_SAMPLES;  // skip first samples for noise reduction
       statsFileName = "statsAll.csv";
       reliability_type = "best_effort";
       if(useReliable) reliability_type = "reliable";
-      // allocate memory for histogram bins: nodes+1 x 40000, 1us per bin.
+
+      // allocate memory for histogram bins:
       uint32_t mem_to_alloc = my_nodes_count * histo_bin_count;
       if(!(histo_bins = (uint32_t *) calloc(mem_to_alloc, sizeof(uint32_t)))) {
         fprintf(stderr, "cannot allocate %u bytes of memory (%s:%d)\n", mem_to_alloc, __FILE__, __LINE__ );
@@ -129,7 +133,6 @@ class IpcTail : public rclcpp::Node
             binIdx = (histo_bin_count-1);
           }
           histo_bins[(binIdx * my_nodes_count) + (i+1)]++;
-
           ipcSumLat += (uint64_t)nodeLat;
         }
 
@@ -289,7 +292,6 @@ class IpcTail : public rclcpp::Node
       fprintf(fp, "\n");
       fclose(fp);
       return;
-
     }
 
     // -----------------------------------------------------------------------

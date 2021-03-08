@@ -49,36 +49,18 @@ class IpcThru : public rclcpp::Node
       // get the current time to calc node-to-node latency
       uint64_t myTime = tstamp_get();
 
-  // debug
-//  fprintf(stderr, "M%u:", node_number);
-//  for(int32_t d=0 ; d<40 ; d++) {
-//    fprintf(stderr, " %02x", msg->data[TS_NODE_BASE + d]);
-//  }
-//  fprintf(stderr, "\n");
-
-
       // copy the received message to the send message
       send_msg_ = *msg;
-
 
       // get the time difference from previous node, and put into next-open slot in array
       uint64_t prevTime = 0;
       memcpy(&prevTime, &send_msg_.data[PREV_TS_OFS],sizeof(uint64_t));
       uint64_t timeDiff = myTime - prevTime;
       if(timeDiff > 0xffffffff) timeDiff = 0xffffffff;  // saturate if over 32 bits (4 seconds)
-      uint32_t myDiff = (uint32_t)(timeDiff & 0xffffffff);
-  
-  // fprintf(stderr, "myTime: %lu, prevTime: %lu, myDiff: %u, myNode: %u\n", myTime, prevTime, myDiff, node_number);
-
-#if 1 // this uses an index in the array
+      uint32_t myDiff = (uint32_t)(timeDiff & 0xffffffff);  
       uint32_t nextSlot = (send_msg_.data[TS_IDX_OFS] * sizeof(uint32_t)) + TS_NODE_BASE;
       memcpy(&send_msg_.data[nextSlot], &myDiff, sizeof(uint32_t));
       send_msg_.data[TS_IDX_OFS]++;
-#else // this uses a fixed offset based on my node number
- //     uint32_t nextSlot = ((node_number - 1) * 4) + TS_NODE_BASE;
- //     memcpy(&send_msg_.data[nextSlot], &myDiff, 4);
-#endif
-
 
       // now get another current timestamp into the 'prevTime' position (to send to the next node)
       myTime = tstamp_get();

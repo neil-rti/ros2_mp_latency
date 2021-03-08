@@ -5,9 +5,7 @@
 #ifndef __IPCTEST_HPP__
 #define __IPCTEST_HPP__
 
-// define the data size to be used for the test here
-#define MP_DATA_SIZE  1000   // define as 100, 1000, 10000, 100000, 500000, 1000000, 4000000, 8000000
-
+// MP_DATA_SIZE is a compile-time option
 #if MP_DATA_SIZE == 100
 #include "irobot_interfaces_plugin/msg/stamped100b.hpp"
 #define MP_DATA_TYPE  irobot_interfaces_plugin::msg::Stamped100b

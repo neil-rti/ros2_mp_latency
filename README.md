@@ -30,17 +30,45 @@ Build as you would any ROS2 component:
   source (your ROS2 installation)/setup.bash
   colcon build --symlink-install
 ```
-Note that the data type used in the test is a build-time option, selected in the file `mp_latency/include/IpcTestDefs.hpp`.  
-Edit this value and rebuild to test with a different size data sample (100 bytes to 500kB).  
-Note also that RMW is selected by ROS2 using the environment variable `RMW_IMPLEMENTATION`
--- be sure to set this variable to select the RMW to be tested.  
+Note that the data type(and size) used in the test is a build-time option.  
+Separate executable images for each size are created; this is selected in the file `mp_latency/include/IpcTestDefs.hpp` by a compiler definition (MP_DATA_SIZE), which is passed by the CMakeLists.txt build
+to create a series of executables (3 types of executable for each data type in the test).  
 
 # To Run:
-Runs as normal ROS2 components, with command-line arguments.  
-Because this runs in separate processes, it is recommended to use ROS2 launch files or a shell
-script to automate the test (example launch files are included, see below).  
+Runs as normal ROS2 components, with command-line arguments and use of environment variables.  
+This test runs in separate processes; each has command-line arguments and uses a set of 
+environment variables to configure the test.  Therefore it is recommended to use ROS2 launch
+files and a shell script to automate the setting of these values.  
+(example launch and script files are included).  
 
-The command line arguements (and default values) for each application are:  
+
+## Running a test suite using a shell script:
+To run a quick test sweep of: 5 data types (100 to 500k bytes), 3 RMW types, 
+reliable/best effort, 1 pub freq, 1 config, run the following script:
+```bash
+  scripts/run_quick_a.sh
+```
+This shell script repeatedly calls the ROS2 launch file in mp_latency/launch/mplat_ser_n.py
+with variations in the environment variables that control the test, resulting in a 
+complete comparison test in a very short period of time.  
+
+
+## Running a single test using a ROS2 launch file:
+A single test configuration can be run using a ROS2 launch file to launch the desired
+test configuration: quantity and type of each test process.   Example launch files are
+provided that use environment variables to set the command line options, or these may be
+set directly in the launch file.  
+For example, a test that runs a HEAD-->THRU-->TAIL test configuration using the 100 byte 
+data size may be launch with the example launch file as:  
+```bash
+  ros2 launch mp_latency/launch/mplat_ser_n.py
+```
+If the expected environment variables are not set, the test will use the default values 
+defined in the launch file.
+
+
+## Running the individual executables manually from a command line:
+The command line arguments (and default values) for each application are:  
 
 **ipchead**: 5 args:
  - `testDuration` in seconds, to run the test then exit (default: 60)
@@ -65,22 +93,18 @@ The command line arguements (and default values) for each application are:
  - `rmwType` RMW in use during this test ("unknown")
  - `myConfig` Named configuration for this test ("defaultCfg")
 
+The RMW selection is made by ROS2 using the environment variable RMW_IMPLEMENTATION.  
 
-This test places its resulting data files into the directory where ipctail was launched, so it's
+This test places its resulting data files into the directory where ipctail_* was launched, so it's
 recommended to create a results directory and launch the test from there.  
 
 If each component is launched on a ROS2 command line with no arguments, such as:  
 ```bash
-  ros2 run mp_latency ipchead &
-  ros2 run mp_latency ipcthru &
-  ros2 run mp_latency ipctail &
+  ros2 run mp_latency ipchead_1kb &
+  ros2 run mp_latency ipcthru_1kb &
+  ros2 run mp_latency ipctail_1kb &
 ```
-it will run a 60-second latency test and write the results to files.
-For convenience and to run custom tests, ROS2 Launch file examples and shell scripts are included to help with test automation.  The launch files can be run as normal ROS2 launch files, such as:  
-```bash
-  ros2 launch mp_latency/launch/mplat_ser5.py
-```
-This will launch a test configuration of: HEAD-->(5 nodes in series)-->TAIL.
+it will run a HEAD-->THRU-->TAIL latency test using default values, and write the results to files.  
 
 # Output Data Files
 3 File types are produced, all are in .csv (comma-separated values) format for easy opening with a spreadsheet program.  
