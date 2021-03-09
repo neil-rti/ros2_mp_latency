@@ -75,6 +75,39 @@ add_executable(ipctail_500kb src/IpcTail.cpp)
 ament_target_dependencies(ipctail_500kb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
 target_compile_definitions(ipctail_500kb PUBLIC MP_DATA_SIZE=500000)
 
+# stamped 1mb
+add_executable(ipchead_1mb src/IpcHead.cpp)
+ament_target_dependencies(ipchead_1mb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
+target_compile_definitions(ipchead_1mb PUBLIC MP_DATA_SIZE=1000000)
+add_executable(ipcthru_1mb src/IpcThru.cpp)
+ament_target_dependencies(ipcthru_1mb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
+target_compile_definitions(ipcthru_1mb PUBLIC MP_DATA_SIZE=1000000)
+add_executable(ipctail_1mb src/IpcTail.cpp)
+ament_target_dependencies(ipctail_1mb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
+target_compile_definitions(ipctail_1mb PUBLIC MP_DATA_SIZE=1000000)
+
+# stamped 4mb
+add_executable(ipchead_4mb src/IpcHead.cpp)
+ament_target_dependencies(ipchead_4mb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
+target_compile_definitions(ipchead_4mb PUBLIC MP_DATA_SIZE=4000000)
+add_executable(ipcthru_4mb src/IpcThru.cpp)
+ament_target_dependencies(ipcthru_4mb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
+target_compile_definitions(ipcthru_4mb PUBLIC MP_DATA_SIZE=4000000)
+add_executable(ipctail_4mb src/IpcTail.cpp)
+ament_target_dependencies(ipctail_4mb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
+target_compile_definitions(ipctail_4mb PUBLIC MP_DATA_SIZE=4000000)
+
+# stamped 8mb
+add_executable(ipchead_8mb src/IpcHead.cpp)
+ament_target_dependencies(ipchead_8mb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
+target_compile_definitions(ipchead_8mb PUBLIC MP_DATA_SIZE=8000000)
+add_executable(ipcthru_8mb src/IpcThru.cpp)
+ament_target_dependencies(ipcthru_8mb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
+target_compile_definitions(ipcthru_8mb PUBLIC MP_DATA_SIZE=8000000)
+add_executable(ipctail_8mb src/IpcTail.cpp)
+ament_target_dependencies(ipctail_8mb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
+target_compile_definitions(ipctail_8mb PUBLIC MP_DATA_SIZE=8000000)
+
 
 install(TARGETS 
   ipchead_100b   ipcthru_100b   ipctail_100b
@@ -82,6 +115,9 @@ install(TARGETS
   ipchead_10kb   ipcthru_10kb   ipctail_10kb
   ipchead_100kb  ipcthru_100kb  ipctail_100kb
   ipchead_500kb  ipcthru_500kb  ipctail_500kb
+  ipchead_1mb    ipcthru_1mb    ipctail_1mb
+  ipchead_4mb    ipcthru_4mb    ipctail_4mb
+  ipchead_8mb    ipcthru_8mb    ipctail_8mb
   DESTINATION lib/${PROJECT_NAME}
 )
 
