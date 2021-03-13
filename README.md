@@ -5,7 +5,7 @@ This is a configurable ROS2 system latency test, built using small ROS2 componen
 
 This test will build 3 component types:
  - **ipcsource**: Publishes the build-selected data type to a named topic, at a given rate & reliability.  The sample is timestamped before publication.
- - **ipcprocess**: Receives a sample from a named topic, adds timestamps to the sample then re-publishes on a named topic.
+ - **ipcwork**: Receives a sample from a named topic, adds timestamps to the sample then re-publishes on a named topic.
  - **ipcsink**: Receives a sample from a named topic, timestamps then computes latency at each step, writes results to:
     - A sequential log file for that test run.
     - A histogram file for that test run.
@@ -58,7 +58,7 @@ A single test configuration can be run using a ROS2 launch file to launch the de
 test configuration: quantity and type of each test process.   Example launch files are
 provided that use environment variables to set the command line options, or these may be
 set directly in the launch file.  
-For example, a test that runs a SOURCE-->PROCESS-->SINK test configuration using the 100 byte 
+For example, a test that runs a SOURCE-->WORK-->SINK test configuration using the 100 byte 
 data size may be launch with the example launch file as:  
 ```bash
   ros2 launch mp_latency/launch/mplat_ser_n.py
@@ -77,7 +77,7 @@ The command line arguments (and default values) for each application are:
  - `myNodeId` ID number for this SOURCE node (0)
  - `toTopic` Named topic to publish ("fromSource")
 
-**ipcprocess**: 5 args:
+**ipcwork**: 5 args:
  - `testDuration` in seconds, to run the test then exit (default: 60)
  - `relType` reliability, "REL" or "BE" (best effort)
  - `myNodeId` ID number for this node (1)
@@ -101,10 +101,10 @@ recommended to create a results directory and launch the test from there.
 If each component is launched on a ROS2 command line with no arguments, such as:  
 ```bash
   ros2 run mp_latency ipcsource_1kb &
-  ros2 run mp_latency ipcprocess_1kb &
+  ros2 run mp_latency ipcwork_1kb &
   ros2 run mp_latency ipcsink_1kb &
 ```
-it will run a SOURCE-->PROCESS-->SINK latency test using default values, and write the results to files.  
+it will run a SOURCE-->WORK-->SINK latency test using default values, and write the results to files.  
 
 # Output Data Files
 3 File types are produced, all are in .csv (comma-separated values) format for easy opening with a spreadsheet program.  

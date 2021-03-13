@@ -9,7 +9,7 @@ DDS_BACKENDS='rmw_connextdds rmw_fastrtps_cpp rmw_cyclonedds_cpp'
 F_PUBLISHER_SET='1 10 100'
 MSG_SIZE_SUFFIX_SET='100b 1kb 10kb 100kb 500kb'
 QOS_RELIABILITY_SET='BE REL'
-NODE_THRU_COUNT_SET='0 1 2 3 4 5 10 15 20'
+NODE_WORK_COUNT_SET='0 1 2 3 4 5 10 15 20'
 TEST_DURATION=60
 TEST_TOPIC_NAME='pt_profile_topic_'
 TEST_CONFIG_NAME='h-sn-t'
@@ -21,7 +21,7 @@ do
     do
         for BACKEND in $DDS_BACKENDS
         do
-            for NODE_THRU_COUNT in $NODE_THRU_COUNT_SET
+            for NODE_WORK_COUNT in $NODE_WORK_COUNT_SET
             do
                 for MSG_SIZE_SUFFIX in $MSG_SIZE_SUFFIX_SET
                 do
@@ -31,7 +31,7 @@ do
                     export RTI_MPL_PUB_FREQ=$F_PUBLISHER 
                     export RTI_MPL_RELY_TYPE=$QOS_RELIABILITY 
                     export RTI_MPL_TOPIC_NAME=$TEST_TOPIC_NAME
-                    export RTI_MPL_THRU_NODES=$NODE_THRU_COUNT
+                    export RTI_MPL_WORK_NODES=$NODE_WORK_COUNT
                     export RTI_MPL_CONFIG_NAME=$TEST_CONFIG_NAME
                     export RTI_MPL_SIZE_SUFFIX=$MSG_SIZE_SUFFIX
 

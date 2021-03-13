@@ -1,5 +1,5 @@
 # This is an example of a more verbose in-series test description
-# If testing arbitrary lengths of THRU node chains, use mplat_ser_n.py 
+# If testing arbitrary lengths of WORK node chains, use mplat_ser_n.py 
 from launch import LaunchDescription
 from launch_ros.actions import Node
 import os
@@ -19,9 +19,9 @@ if 'RTI_MPL_RELY' in os.environ:
 
 my_node = 0                 # starting node ID
 data_type_suffix = '1kb'    # edit this to change data size in test
-exe_head = 'ipchead_' + data_type_suffix
-exe_thru = 'ipcthru_' + data_type_suffix
-exe_tail = 'ipctail_' + data_type_suffix
+exe_source = 'ipcsource_' + data_type_suffix
+exe_work = 'ipcwork_' + data_type_suffix
+exe_sink = 'ipcsink_' + data_type_suffix
 rmw_type = os.environ.get('RMW_IMPLEMENTATION') # RMW type used for test (for TAIL node results)
 
 def generate_launch_description():
@@ -29,16 +29,16 @@ def generate_launch_description():
         Node(
             package='mp_latency',
             namespace='ipc_lat',
-            executable=exe_tail,
+            executable=exe_sink,
             output='screen',
             # TAIL args: testDur, REL, pubFreq, totalNodes, fromTopic, rmwType, myCfgName
             arguments=[test_duration, rel_type, pub_frequency, '4', 'pt_profile_topic_2_3', rmw_type, 'h-2s-t'],
-            name='tail',
+            name='sink',
         ),
         Node(
             package='mp_latency',
             namespace='ipc_lat',
-            executable=exe_thru,
+            executable=exe_work,
             output='screen',
             # TEST args: testDur, REL, myNodeId, fromTopic, toTopic
             arguments=[test_duration, rel_type, '1', 'pt_profile_topic_0_1', 'pt_profile_topic_1_2'],
@@ -47,7 +47,7 @@ def generate_launch_description():
         Node(
             package='mp_latency',
             namespace='ipc_lat',
-            executable=exe_thru,
+            executable=exe_work,
             output='screen',
             # TEST args: testDur, REL, myNodeId, fromTopic, toTopic
             arguments=[test_duration, rel_type, '2', 'pt_profile_topic_1_2', 'pt_profile_topic_2_3'],
@@ -56,10 +56,10 @@ def generate_launch_description():
         Node(
             package='mp_latency',
             namespace='ipc_lat',
-            executable=exe_head,
+            executable=exe_source,
             output='screen',
             # HEAD args: testDur, REL, pubFreq, myNodeId, toTopic
             arguments=[test_duration, rel_type, pub_frequency, '0', 'pt_profile_topic_0_1'],
-            name='head'
+            name='source'
         )
     ])

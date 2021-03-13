@@ -4,7 +4,7 @@ import os
 
 # This is used for configuring serial-chain tests with 0--N nodes.
 # Env var are used to set:
-#   RMW, topicNameRoot, thruNodesCount, testDuration, relyType, pubFreq, cfgName, dataSizeSuffix
+#   RMW, topicNameRoot, workNodesCount, testDuration, relyType, pubFreq, cfgName, dataSizeSuffix
 rmw_type = 'rmw_connextdds'                 # rmw selection, default to Connext pro
 if 'RMW_IMPLEMENTATION' in os.environ:
     rmw_type = os.environ['RMW_IMPLEMENTATION']
@@ -13,9 +13,9 @@ topic_base = 'pt_profile_topic'             # root of the topic names used in te
 if 'RTI_MPL_TOPIC_NAME' in os.environ:
     topic_base = os.environ['RTI_MPL_TOPIC_NAME']
 
-thru_nodes_count = '1'
-if 'RTI_MPL_THRU_NODES' in os.environ:
-    thru_nodes_count = os.environ['RTI_MPL_THRU_NODES']
+work_nodes_count = '1'
+if 'RTI_MPL_WORK_NODES' in os.environ:
+    work_nodes_count = os.environ['RTI_MPL_WORK_NODES']
 
 test_duration = '60'
 if 'RTI_MPL_TEST_DURATION' in os.environ:
@@ -37,31 +37,31 @@ size_suffix = '100b'
 if 'RTI_MPL_SIZE_SUFFIX' in os.environ:
     size_suffix = os.environ['RTI_MPL_SIZE_SUFFIX']
 
-exe_head = 'ipchead_' + size_suffix
-exe_thru = 'ipcthru_' + size_suffix
-exe_tail = 'ipctail_' + size_suffix
+exe_source = 'ipcsource_' + size_suffix
+exe_work = 'ipcwork_' + size_suffix
+exe_sink = 'ipcsink_' + size_suffix
 
 
 # build the test per the args
 def generate_launch_description():
     ld = LaunchDescription()
     
-    # add the tail node
-    total_nodes = int(thru_nodes_count) + 2
-    tail_node_topic_name = topic_base + '_' + str(total_nodes-2) + '_' + str(total_nodes-1)
-    tail_node = Node(
+    # add the sink node
+    total_nodes = int(work_nodes_count) + 2
+    sink_node_topic_name = topic_base + '_' + str(total_nodes-2) + '_' + str(total_nodes-1)
+    sink_node = Node(
         package='mp_latency',
         namespace='ipc_lat',
-        executable=exe_tail,
+        executable=exe_sink,
         output='screen',
-        arguments=[test_duration, rely_type, pub_frequency, str(total_nodes), tail_node_topic_name, rmw_type, config_name],
-        name='tail'
+        arguments=[test_duration, rely_type, pub_frequency, str(total_nodes), sink_node_topic_name, rmw_type, config_name],
+        name='sink'
     )
-    ld.add_action(tail_node)
+    ld.add_action(sink_node)
 
-    # add the thru nodes
+    # add the work nodes
     for n in range(1, (total_nodes - 1)):
-        this_node_name = 'thru{}'.format(str(n))
+        this_node_name = 'work{}'.format(str(n))
         from_node_topic_name = '{}_{}_{}'.format(topic_base, str(n-1), str(n))
         to_node_topic_name = '{}_{}_{}'.format(topic_base, str(n), str(n+1))
         
@@ -69,23 +69,23 @@ def generate_launch_description():
             Node(
                 package='mp_latency',
                 namespace='ipc_lat',
-                executable=exe_thru,
+                executable=exe_work,
                 output='screen',
                 arguments=[test_duration, rely_type, str(n), from_node_topic_name, to_node_topic_name],
                 name=this_node_name
             )
         )
     
-    # add the head node
-    head_node_topic_name = '{}_0_1'.format(topic_base)
+    # add the source node
+    source_node_topic_name = '{}_0_1'.format(topic_base)
     ld.add_action(
         Node(
             package='mp_latency',
             namespace='ipc_lat',
-            executable=exe_head,
+            executable=exe_source,
             output='screen',
-            arguments=[test_duration, rely_type, pub_frequency, '0', head_node_topic_name, rmw_type],
-            name='head'
+            arguments=[test_duration, rely_type, pub_frequency, '0', source_node_topic_name, rmw_type],
+            name='source'
         )
      )
 
