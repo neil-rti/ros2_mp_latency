@@ -14,10 +14,10 @@ This test will build 3 component types:
 
 Given the above components, many different test configurations can be devised and automated using ROS2 Launch files and shell scripts or batch files; 1-to-1, 1-to-many, etc.:
 
-![In-series test configurations](test_serial_ros2.png)  
+![In-series test configurations](util/test_serial_ros2.png)  
 msg passing latency is measured end-to-end and at every step.  
 
-![Parallel test configurations](test_parallel_ros2.png)  
+![Parallel test configurations](util/test_parallel_ros2.png)  
 Fan-out and Fan-in conditions may also be measured for latency.  
   
 Components may be on the same machine or distributed throughout your system, and can be tested with any available ROS2 RMW implementation.  
@@ -118,7 +118,7 @@ The resolution (width) of the bins are set at compile time by variables in IpcSi
 Default values are: 1uS collection bin width, 10uS print bin width.  
 The histogram view offers easy visualization of the latency distribution of your system, such as:    
 
-![Latency Histogram](ros2_histo_3node_1kb.png)
+![Latency Histogram](util/ros2_histo_3node_1kb.png)
 
 ## statsAll.csv  
 This file contains a statistical summary of the latency of each test run.  
