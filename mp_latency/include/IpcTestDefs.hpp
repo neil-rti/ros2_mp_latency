@@ -9,25 +9,43 @@
 #if MP_DATA_SIZE == 100
 #include "irobot_interfaces_plugin/msg/stamped100b.hpp"
 #define MP_DATA_TYPE  irobot_interfaces_plugin::msg::Stamped100b
-#elif MP_DATA_SIZE == 1000
+#elif MP_DATA_SIZE == 1024
 #include "irobot_interfaces_plugin/msg/stamped1kb.hpp"
 #define MP_DATA_TYPE  irobot_interfaces_plugin::msg::Stamped1kb
-#elif MP_DATA_SIZE == 10000
+#elif MP_DATA_SIZE == 4096
+#include "irobot_interfaces_plugin/msg/stamped4kb.hpp"
+#define MP_DATA_TYPE  irobot_interfaces_plugin::msg::Stamped4kb
+#elif MP_DATA_SIZE == 10240
 #include "irobot_interfaces_plugin/msg/stamped10kb.hpp"
 #define MP_DATA_TYPE  irobot_interfaces_plugin::msg::Stamped10kb
-#elif MP_DATA_SIZE == 100000
+#elif MP_DATA_SIZE == 16384
+#include "irobot_interfaces_plugin/msg/stamped16kb.hpp"
+#define MP_DATA_TYPE  irobot_interfaces_plugin::msg::Stamped16kb
+#elif MP_DATA_SIZE == 32768
+#include "irobot_interfaces_plugin/msg/stamped32kb.hpp"
+#define MP_DATA_TYPE  irobot_interfaces_plugin::msg::Stamped32kb
+#elif MP_DATA_SIZE == 61440
+#include "irobot_interfaces_plugin/msg/stamped60kb.hpp"
+#define MP_DATA_TYPE  irobot_interfaces_plugin::msg::Stamped60kb
+#elif MP_DATA_SIZE == 102400
 #include "irobot_interfaces_plugin/msg/stamped100kb.hpp"
 #define MP_DATA_TYPE  irobot_interfaces_plugin::msg::Stamped100kb
-#elif MP_DATA_SIZE == 500000
+#elif MP_DATA_SIZE == 262144
+#include "irobot_interfaces_plugin/msg/stamped256kb.hpp"
+#define MP_DATA_TYPE  irobot_interfaces_plugin::msg::Stamped256kb
+#elif MP_DATA_SIZE == 512000
 #include "irobot_interfaces_plugin/msg/stamped500kb.hpp"
 #define MP_DATA_TYPE  irobot_interfaces_plugin::msg::Stamped500kb
-#elif MP_DATA_SIZE == 1000000
+#elif MP_DATA_SIZE == 1048576
 #include "irobot_interfaces_plugin/msg/stamped1mb.hpp"
 #define MP_DATA_TYPE  irobot_interfaces_plugin::msg::Stamped1mb
-#elif MP_DATA_SIZE == 4000000
+#elif MP_DATA_SIZE == 2097152
+#include "irobot_interfaces_plugin/msg/stamped2mb.hpp"
+#define MP_DATA_TYPE  irobot_interfaces_plugin::msg::Stamped2mb
+#elif MP_DATA_SIZE == 4194304
 #include "irobot_interfaces_plugin/msg/stamped4mb.hpp"
 #define MP_DATA_TYPE  irobot_interfaces_plugin::msg::Stamped4mb
-#elif MP_DATA_SIZE == 8000000
+#elif MP_DATA_SIZE == 8388608
 #include "irobot_interfaces_plugin/msg/stamped8mb.hpp"
 #define MP_DATA_TYPE  irobot_interfaces_plugin::msg::Stamped8mb
 #else

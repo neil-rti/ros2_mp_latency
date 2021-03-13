@@ -20,10 +20,16 @@ find_package(std_msgs REQUIRED)
 set( CUSTOM_MSGS
   "msg/Stamped100b.msg"
   "msg/Stamped1kb.msg"
+  "msg/Stamped4kb.msg"
   "msg/Stamped10kb.msg"
+  "msg/Stamped16kb.msg"
+  "msg/Stamped32kb.msg"
+  "msg/Stamped60kb.msg"
   "msg/Stamped100kb.msg"
+  "msg/Stamped256kb.msg"
   "msg/Stamped500kb.msg"
   "msg/Stamped1mb.msg"
+  "msg/Stamped2mb.msg"
   "msg/Stamped4mb.msg"
   "msg/Stamped8mb.msg"
 )
