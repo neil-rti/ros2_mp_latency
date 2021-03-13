@@ -4,13 +4,13 @@ IPC latency test for ROS2, multi-process.
 This is a configurable ROS2 system latency test, built using small ROS2 components.  
 
 This test will build 3 component types:
- - **ipchead**: Publishes the build-selected data type to a named topic, at a given rate & reliability.  The sample is timestamped before publication.
- - **ipcthru**: Receives a sample from a named topic, adds timestamps to the sample then re-publishes on a named topic.
- - **ipctail**: Receives a sample from a named topic, timestamps then computes latency at each step, writes results to:
+ - **ipcsource**: Publishes the build-selected data type to a named topic, at a given rate & reliability.  The sample is timestamped before publication.
+ - **ipcprocess**: Receives a sample from a named topic, adds timestamps to the sample then re-publishes on a named topic.
+ - **ipcsink**: Receives a sample from a named topic, timestamps then computes latency at each step, writes results to:
     - A sequential log file for that test run.
     - A histogram file for that test run.
     - Adds a statistical summary for that test run to a common file.  
-    These files are placed in the directory from which ipctail is launched.  
+    These files are placed in the directory from which ipcsink is launched.  
 
 Given the above components, many different test configurations can be devised and automated using ROS2 Launch files and shell scripts or batch files; 1-to-1, 1-to-many, etc.:
 
@@ -58,7 +58,7 @@ A single test configuration can be run using a ROS2 launch file to launch the de
 test configuration: quantity and type of each test process.   Example launch files are
 provided that use environment variables to set the command line options, or these may be
 set directly in the launch file.  
-For example, a test that runs a HEAD-->THRU-->TAIL test configuration using the 100 byte 
+For example, a test that runs a SOURCE-->PROCESS-->SINK test configuration using the 100 byte 
 data size may be launch with the example launch file as:  
 ```bash
   ros2 launch mp_latency/launch/mplat_ser_n.py
@@ -70,41 +70,41 @@ defined in the launch file.
 ## Running the individual executables manually from a command line:
 The command line arguments (and default values) for each application are:  
 
-**ipchead**: 5 args:
+**ipcsource**: 5 args:
  - `testDuration` in seconds, to run the test then exit (default: 60)
  - `relType` reliability, "REL" or "BE" (best effort)
  - `pubFreq` publish frequency, in Hz (1)
- - `myNodeId` ID number for this HEAD node (0)
- - `toTopic` Named topic to publish ("fromHead")
+ - `myNodeId` ID number for this SOURCE node (0)
+ - `toTopic` Named topic to publish ("fromSource")
 
-**ipcthru**: 5 args:
+**ipcprocess**: 5 args:
  - `testDuration` in seconds, to run the test then exit (default: 60)
  - `relType` reliability, "REL" or "BE" (best effort)
  - `myNodeId` ID number for this node (1)
- - `fromTopic` Named topic to subscribe ("fromHead")
- - `toTopic` Named topic to publish ("toTail")
+ - `fromTopic` Named topic to subscribe ("fromSource")
+ - `toTopic` Named topic to publish ("toSink")
 
- **ipctail**: 7 args:
+ **ipcsink**: 7 args:
  - `testDuration` in seconds, to run the test then exit (default: 60)
  - `relType` reliability, "REL" or "BE" (best effort)
  - `pubFreq` publish frequency, in Hz (1)
  - `nodesInChain` number of nodes leading to this chain (3)
- - `fromTopic` Named topic to subscribe ("toTail")
+ - `fromTopic` Named topic to subscribe ("toSink")
  - `rmwType` RMW in use during this test ("unknown")
  - `myConfig` Named configuration for this test ("defaultCfg")
 
 The RMW selection is made by ROS2 using the environment variable RMW_IMPLEMENTATION.  
 
-This test places its resulting data files into the directory where ipctail_* was launched, so it's
+This test places its resulting data files into the directory where ipcsink_* was launched, so it's
 recommended to create a results directory and launch the test from there.  
 
 If each component is launched on a ROS2 command line with no arguments, such as:  
 ```bash
-  ros2 run mp_latency ipchead_1kb &
-  ros2 run mp_latency ipcthru_1kb &
-  ros2 run mp_latency ipctail_1kb &
+  ros2 run mp_latency ipcsource_1kb &
+  ros2 run mp_latency ipcprocess_1kb &
+  ros2 run mp_latency ipcsink_1kb &
 ```
-it will run a HEAD-->THRU-->TAIL latency test using default values, and write the results to files.  
+it will run a SOURCE-->PROCESS-->SINK latency test using default values, and write the results to files.  
 
 # Output Data Files
 3 File types are produced, all are in .csv (comma-separated values) format for easy opening with a spreadsheet program.  
@@ -114,7 +114,7 @@ This file is a sequential log with the results of each test sample, written as i
 
 ## test_(options)_histo.csv  
 This file contains a binned histogram summary of the test run, written at test completion.  
-The resolution (width) of the bins are set at compile time by variables in IpcTail.cpp.  
+The resolution (width) of the bins are set at compile time by variables in IpcSink.cpp.  
 Default values are: 1uS collection bin width, 10uS print bin width.  
 The histogram view offers easy visualization of the latency distribution of your system, such as:    
 

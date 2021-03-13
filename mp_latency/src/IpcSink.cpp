@@ -13,13 +13,13 @@ using std::placeholders::_1;
 #define HISTO_BIN_PRINT       (10)        // at 1uS per bin = 10uS print resolution
 #define SKIP_FIRST_N_SAMPLES  (5)         // skip first 5 samples for startup noise reduction
 
-class IpcTail : public rclcpp::Node
+class IpcSink : public rclcpp::Node
 {
   public:
-    // TAIL node args are: testDuration, useReliable, pubFreq, totalNodes, fromTopic, rmwType
-    IpcTail(uint32_t testDuration, bool useReliable, float pubFreq, 
+    // SINK node args are: testDuration, useReliable, pubFreq, totalNodes, fromTopic, rmwType
+    IpcSink(uint32_t testDuration, bool useReliable, float pubFreq, 
       uint32_t totalNodes, std::string fromTopic, std::string rmwType, std::string myConfig)
-    : Node("ipc_tail")
+    : Node("ipc_sink")
     {
       // init values
       run_for_seconds = testDuration;
@@ -85,17 +85,17 @@ class IpcTail : public rclcpp::Node
       // create subscriber to the named topic
       if(useReliable) {
         subscription_ = this->create_subscription<MP_DATA_TYPE>(
-          fromTopic, rclcpp::QoS(1).reliable(), std::bind(&IpcTail::topic_callback, this, _1));
+          fromTopic, rclcpp::QoS(1).reliable(), std::bind(&IpcSink::topic_callback, this, _1));
       }
       else {
         subscription_ = this->create_subscription<MP_DATA_TYPE>(
-          fromTopic, rclcpp::QoS(1).best_effort(), std::bind(&IpcTail::topic_callback, this, _1));
+          fromTopic, rclcpp::QoS(1).best_effort(), std::bind(&IpcSink::topic_callback, this, _1));
       }
 
       // create timer to check when to quit
       timer_ = this->create_wall_timer(
           std::chrono::milliseconds(654),
-          std::bind(&IpcTail::timer_callback, this));
+          std::bind(&IpcSink::timer_callback, this));
 
     }
 
@@ -116,9 +116,9 @@ class IpcTail : public rclcpp::Node
         memcpy(&prevTime, &msg->data[PREV_TS_OFS],sizeof(uint64_t));
         uint64_t myDiff = myTime - prevTime;
 
-        // get the headTime from the received data
-        uint64_t headTime = 0;
-        memcpy(&headTime, &msg->data[HEAD_TS_OFS],sizeof(uint64_t));      
+        // get the sourceTime from the received data
+        uint64_t sourceTime = 0;
+        memcpy(&sourceTime, &msg->data[SOURCE_TS_OFS],sizeof(uint64_t));      
 
         // add to histogram array for each node and total
         // Total is in column 0, each node is in [1 to N]
@@ -165,7 +165,7 @@ class IpcTail : public rclcpp::Node
         fprintf(fp, "%8lu, ", myDiff);
 
         // print the start and end timestamps and their difference
-        fprintf(fp, "%lu, %lu,  %11lu\n", headTime, myTime, (myTime - headTime));
+        fprintf(fp, "%lu, %lu,  %11lu\n", sourceTime, myTime, (myTime - sourceTime));
         //fflush(fp);
       }
     }
@@ -309,9 +309,9 @@ class IpcTail : public rclcpp::Node
         fclose(fp);
 
         // create a histogram/summary file, and append stats to commmon file.
-        IpcTail::append_stats_file();
+        IpcSink::append_stats_file();
         histo_bin_printres = 50;      // sum together 10 bins when reporting.
-        IpcTail::write_histo_file();
+        IpcSink::write_histo_file();
 
         free(histo_bins);
         rclcpp::shutdown();
@@ -340,14 +340,14 @@ class IpcTail : public rclcpp::Node
 
 int main(int argc, char * argv[])
 {
-  // TAIL node gets 7 args, default values are here, in arg order:
+  // SINK node gets 7 args, default values are here, in arg order:
   uint32_t testDuration = 60;           // [1] how long to run the test  (for quitting)
   bool useReliable = false;             // [2] best effort or reliable
   float pubFreq = 1.0;                  // [3] the publication frequency (for report)
   uint32_t totalNodes = 3;              // [4] how many links are in my measurement chain (+1 for sum)
-  std::string fromTopic = "toTail";     // [5] topic I subscribe to
+  std::string fromTopic = "toSink";     // [5] topic I subscribe to
   std::string rmwType = "unknown";      // [6] RMW type used in test (for report)
-  std::string myConfig = "defaultCfg";  // [7] Name of this test configuration (and this tail end)
+  std::string myConfig = "defaultCfg";  // [7] Name of this test configuration (and this sink end)
  
   // NOTE that extra values can be passed by the ROS2 launch system
   if(argc >= 7) {
@@ -365,7 +365,7 @@ int main(int argc, char * argv[])
   }
 
   rclcpp::init(argc, argv);
-  rclcpp::spin(std::make_shared<IpcTail>(testDuration, useReliable, pubFreq, totalNodes, fromTopic, rmwType, myConfig));
+  rclcpp::spin(std::make_shared<IpcSink>(testDuration, useReliable, pubFreq, totalNodes, fromTopic, rmwType, myConfig));
   rclcpp::shutdown();
   return 0;
 }

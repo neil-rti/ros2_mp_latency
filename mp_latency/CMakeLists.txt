@@ -21,103 +21,103 @@ include_directories(include)
 
 # create separate executables for HEAD/THRU/TAIL at each data size
 # stamped 100b
-add_executable(ipchead_100b src/IpcHead.cpp)
-ament_target_dependencies(ipchead_100b rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
-target_compile_definitions(ipchead_100b PUBLIC MP_DATA_SIZE=100)
-add_executable(ipcthru_100b src/IpcThru.cpp)
-ament_target_dependencies(ipcthru_100b rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
-target_compile_definitions(ipcthru_100b PUBLIC MP_DATA_SIZE=100)
-add_executable(ipctail_100b src/IpcTail.cpp)
-ament_target_dependencies(ipctail_100b rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
-target_compile_definitions(ipctail_100b PUBLIC MP_DATA_SIZE=100)
+add_executable(ipcsource_100b src/IpcSource.cpp)
+ament_target_dependencies(ipcsource_100b rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
+target_compile_definitions(ipcsource_100b PUBLIC MP_DATA_SIZE=100)
+add_executable(ipcprocess_100b src/IpcProcess.cpp)
+ament_target_dependencies(ipcprocess_100b rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
+target_compile_definitions(ipcprocess_100b PUBLIC MP_DATA_SIZE=100)
+add_executable(ipcsink_100b src/IpcSink.cpp)
+ament_target_dependencies(ipcsink_100b rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
+target_compile_definitions(ipcsink_100b PUBLIC MP_DATA_SIZE=100)
 
 # stamped 1kb
-add_executable(ipchead_1kb src/IpcHead.cpp)
-ament_target_dependencies(ipchead_1kb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
-target_compile_definitions(ipchead_1kb PUBLIC MP_DATA_SIZE=1000)
-add_executable(ipcthru_1kb src/IpcThru.cpp)
-ament_target_dependencies(ipcthru_1kb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
-target_compile_definitions(ipcthru_1kb PUBLIC MP_DATA_SIZE=1000)
-add_executable(ipctail_1kb src/IpcTail.cpp)
-ament_target_dependencies(ipctail_1kb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
-target_compile_definitions(ipctail_1kb PUBLIC MP_DATA_SIZE=1000)
+add_executable(ipcsource_1kb src/IpcSource.cpp)
+ament_target_dependencies(ipcsource_1kb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
+target_compile_definitions(ipcsource_1kb PUBLIC MP_DATA_SIZE=1000)
+add_executable(ipcprocess_1kb src/IpcProcess.cpp)
+ament_target_dependencies(ipcprocess_1kb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
+target_compile_definitions(ipcprocess_1kb PUBLIC MP_DATA_SIZE=1000)
+add_executable(ipcsink_1kb src/IpcSink.cpp)
+ament_target_dependencies(ipcsink_1kb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
+target_compile_definitions(ipcsink_1kb PUBLIC MP_DATA_SIZE=1000)
 
 # stamped 10kb
-add_executable(ipchead_10kb src/IpcHead.cpp)
-ament_target_dependencies(ipchead_10kb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
-target_compile_definitions(ipchead_10kb PUBLIC MP_DATA_SIZE=10000)
-add_executable(ipcthru_10kb src/IpcThru.cpp)
-ament_target_dependencies(ipcthru_10kb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
-target_compile_definitions(ipcthru_10kb PUBLIC MP_DATA_SIZE=10000)
-add_executable(ipctail_10kb src/IpcTail.cpp)
-ament_target_dependencies(ipctail_10kb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
-target_compile_definitions(ipctail_10kb PUBLIC MP_DATA_SIZE=10000)
+add_executable(ipcsource_10kb src/IpcSource.cpp)
+ament_target_dependencies(ipcsource_10kb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
+target_compile_definitions(ipcsource_10kb PUBLIC MP_DATA_SIZE=10000)
+add_executable(ipcprocess_10kb src/IpcProcess.cpp)
+ament_target_dependencies(ipcprocess_10kb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
+target_compile_definitions(ipcprocess_10kb PUBLIC MP_DATA_SIZE=10000)
+add_executable(ipcsink_10kb src/IpcSink.cpp)
+ament_target_dependencies(ipcsink_10kb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
+target_compile_definitions(ipcsink_10kb PUBLIC MP_DATA_SIZE=10000)
 
 # stamped 100kb
-add_executable(ipchead_100kb src/IpcHead.cpp)
-ament_target_dependencies(ipchead_100kb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
-target_compile_definitions(ipchead_100kb PUBLIC MP_DATA_SIZE=100000)
-add_executable(ipcthru_100kb src/IpcThru.cpp)
-ament_target_dependencies(ipcthru_100kb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
-target_compile_definitions(ipcthru_100kb PUBLIC MP_DATA_SIZE=100000)
-add_executable(ipctail_100kb src/IpcTail.cpp)
-ament_target_dependencies(ipctail_100kb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
-target_compile_definitions(ipctail_100kb PUBLIC MP_DATA_SIZE=100000)
+add_executable(ipcsource_100kb src/IpcSource.cpp)
+ament_target_dependencies(ipcsource_100kb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
+target_compile_definitions(ipcsource_100kb PUBLIC MP_DATA_SIZE=100000)
+add_executable(ipcprocess_100kb src/IpcProcess.cpp)
+ament_target_dependencies(ipcprocess_100kb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
+target_compile_definitions(ipcprocess_100kb PUBLIC MP_DATA_SIZE=100000)
+add_executable(ipcsink_100kb src/IpcSink.cpp)
+ament_target_dependencies(ipcsink_100kb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
+target_compile_definitions(ipcsink_100kb PUBLIC MP_DATA_SIZE=100000)
 
 # stamped 500kb
-add_executable(ipchead_500kb src/IpcHead.cpp)
-ament_target_dependencies(ipchead_500kb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
-target_compile_definitions(ipchead_500kb PUBLIC MP_DATA_SIZE=500000)
-add_executable(ipcthru_500kb src/IpcThru.cpp)
-ament_target_dependencies(ipcthru_500kb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
-target_compile_definitions(ipcthru_500kb PUBLIC MP_DATA_SIZE=500000)
-add_executable(ipctail_500kb src/IpcTail.cpp)
-ament_target_dependencies(ipctail_500kb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
-target_compile_definitions(ipctail_500kb PUBLIC MP_DATA_SIZE=500000)
+add_executable(ipcsource_500kb src/IpcSource.cpp)
+ament_target_dependencies(ipcsource_500kb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
+target_compile_definitions(ipcsource_500kb PUBLIC MP_DATA_SIZE=500000)
+add_executable(ipcprocess_500kb src/IpcProcess.cpp)
+ament_target_dependencies(ipcprocess_500kb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
+target_compile_definitions(ipcprocess_500kb PUBLIC MP_DATA_SIZE=500000)
+add_executable(ipcsink_500kb src/IpcSink.cpp)
+ament_target_dependencies(ipcsink_500kb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
+target_compile_definitions(ipcsink_500kb PUBLIC MP_DATA_SIZE=500000)
 
 # stamped 1mb
-add_executable(ipchead_1mb src/IpcHead.cpp)
-ament_target_dependencies(ipchead_1mb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
-target_compile_definitions(ipchead_1mb PUBLIC MP_DATA_SIZE=1000000)
-add_executable(ipcthru_1mb src/IpcThru.cpp)
-ament_target_dependencies(ipcthru_1mb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
-target_compile_definitions(ipcthru_1mb PUBLIC MP_DATA_SIZE=1000000)
-add_executable(ipctail_1mb src/IpcTail.cpp)
-ament_target_dependencies(ipctail_1mb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
-target_compile_definitions(ipctail_1mb PUBLIC MP_DATA_SIZE=1000000)
+add_executable(ipcsource_1mb src/IpcSource.cpp)
+ament_target_dependencies(ipcsource_1mb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
+target_compile_definitions(ipcsource_1mb PUBLIC MP_DATA_SIZE=1000000)
+add_executable(ipcprocess_1mb src/IpcProcess.cpp)
+ament_target_dependencies(ipcprocess_1mb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
+target_compile_definitions(ipcprocess_1mb PUBLIC MP_DATA_SIZE=1000000)
+add_executable(ipcsink_1mb src/IpcSink.cpp)
+ament_target_dependencies(ipcsink_1mb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
+target_compile_definitions(ipcsink_1mb PUBLIC MP_DATA_SIZE=1000000)
 
 # stamped 4mb
-add_executable(ipchead_4mb src/IpcHead.cpp)
-ament_target_dependencies(ipchead_4mb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
-target_compile_definitions(ipchead_4mb PUBLIC MP_DATA_SIZE=4000000)
-add_executable(ipcthru_4mb src/IpcThru.cpp)
-ament_target_dependencies(ipcthru_4mb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
-target_compile_definitions(ipcthru_4mb PUBLIC MP_DATA_SIZE=4000000)
-add_executable(ipctail_4mb src/IpcTail.cpp)
-ament_target_dependencies(ipctail_4mb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
-target_compile_definitions(ipctail_4mb PUBLIC MP_DATA_SIZE=4000000)
+add_executable(ipcsource_4mb src/IpcSource.cpp)
+ament_target_dependencies(ipcsource_4mb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
+target_compile_definitions(ipcsource_4mb PUBLIC MP_DATA_SIZE=4000000)
+add_executable(ipcprocess_4mb src/IpcProcess.cpp)
+ament_target_dependencies(ipcprocess_4mb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
+target_compile_definitions(ipcprocess_4mb PUBLIC MP_DATA_SIZE=4000000)
+add_executable(ipcsink_4mb src/IpcSink.cpp)
+ament_target_dependencies(ipcsink_4mb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
+target_compile_definitions(ipcsink_4mb PUBLIC MP_DATA_SIZE=4000000)
 
 # stamped 8mb
-add_executable(ipchead_8mb src/IpcHead.cpp)
-ament_target_dependencies(ipchead_8mb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
-target_compile_definitions(ipchead_8mb PUBLIC MP_DATA_SIZE=8000000)
-add_executable(ipcthru_8mb src/IpcThru.cpp)
-ament_target_dependencies(ipcthru_8mb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
-target_compile_definitions(ipcthru_8mb PUBLIC MP_DATA_SIZE=8000000)
-add_executable(ipctail_8mb src/IpcTail.cpp)
-ament_target_dependencies(ipctail_8mb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
-target_compile_definitions(ipctail_8mb PUBLIC MP_DATA_SIZE=8000000)
+add_executable(ipcsource_8mb src/IpcSource.cpp)
+ament_target_dependencies(ipcsource_8mb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
+target_compile_definitions(ipcsource_8mb PUBLIC MP_DATA_SIZE=8000000)
+add_executable(ipcprocess_8mb src/IpcProcess.cpp)
+ament_target_dependencies(ipcprocess_8mb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
+target_compile_definitions(ipcprocess_8mb PUBLIC MP_DATA_SIZE=8000000)
+add_executable(ipcsink_8mb src/IpcSink.cpp)
+ament_target_dependencies(ipcsink_8mb rclcpp irobot_interfaces_plugin performance_test_msgs builtin_interfaces)
+target_compile_definitions(ipcsink_8mb PUBLIC MP_DATA_SIZE=8000000)
 
 
 install(TARGETS 
-  ipchead_100b   ipcthru_100b   ipctail_100b
-  ipchead_1kb    ipcthru_1kb    ipctail_1kb
-  ipchead_10kb   ipcthru_10kb   ipctail_10kb
-  ipchead_100kb  ipcthru_100kb  ipctail_100kb
-  ipchead_500kb  ipcthru_500kb  ipctail_500kb
-  ipchead_1mb    ipcthru_1mb    ipctail_1mb
-  ipchead_4mb    ipcthru_4mb    ipctail_4mb
-  ipchead_8mb    ipcthru_8mb    ipctail_8mb
+  ipcsource_100b   ipcprocess_100b   ipcsink_100b
+  ipcsource_1kb    ipcprocess_1kb    ipcsink_1kb
+  ipcsource_10kb   ipcprocess_10kb   ipcsink_10kb
+  ipcsource_100kb  ipcprocess_100kb  ipcsink_100kb
+  ipcsource_500kb  ipcprocess_500kb  ipcsink_500kb
+  ipcsource_1mb    ipcprocess_1mb    ipcsink_1mb
+  ipcsource_4mb    ipcprocess_4mb    ipcsink_4mb
+  ipcsource_8mb    ipcprocess_8mb    ipcsink_8mb
   DESTINATION lib/${PROJECT_NAME}
 )
 

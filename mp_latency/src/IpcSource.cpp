@@ -8,13 +8,13 @@
 
 using namespace std::chrono_literals;
 
-class IpcHead : public rclcpp::Node
+class IpcSource : public rclcpp::Node
 {
   public:
-    // HEAD node args are: testDuration, useReliable, pubFreq, myNodeId, toTopic
-    IpcHead(uint32_t testDuration, bool useReliable, float pubFreq, uint32_t myNodeId,
+    //  node args are: testDuration, useReliable, pubFreq, myNodeId, toTopic
+    IpcSource(uint32_t testDuration, bool useReliable, float pubFreq, uint32_t myNodeId,
         std::string toTopic )
-    : Node("ipc_head")
+    : Node("ipc_source")
     {
       // init
       sample_number = 0;
@@ -42,7 +42,7 @@ class IpcHead : public rclcpp::Node
 
       timer_ = this->create_wall_timer(
           std::chrono::milliseconds(pub_delay_ms),
-          std::bind(&IpcHead::timer_callback, this));
+          std::bind(&IpcSource::timer_callback, this));
     }
 
   private:
@@ -54,8 +54,8 @@ class IpcHead : public rclcpp::Node
       tspec_get(&tstamp);
       uint64_t myTime = (tstamp.tv_sec * 1000000000) + tstamp.tv_nsec;
 
-      // put my timestamp into the 'headTime' and 'prevTime' positions in the array
-      memcpy(&send_msg_.data[HEAD_TS_OFS], &myTime, sizeof(uint64_t));
+      // put my timestamp into the 'sourceTime' and 'prevTime' positions in the array
+      memcpy(&send_msg_.data[SOURCE_TS_OFS], &myTime, sizeof(uint64_t));
       memcpy(&send_msg_.data[PREV_TS_OFS], &myTime, sizeof(uint64_t));
       send_msg_.data[TS_IDX_OFS] = 0; 
 
@@ -81,12 +81,12 @@ class IpcHead : public rclcpp::Node
 
 int main(int argc, char * argv[])
 {
-  // HEAD node gets 5 args, default values are here, in arg order:
+  // SOURCE node gets 5 args, default values are here, in arg order:
   uint32_t testDuration = 60;           // [1] how long to run the test  (for quitting)
   bool useReliable = false;             // [2] best effort or reliable
   float pubFreq = 1.0;                  // [3] the publication frequency
   uint32_t myNodeId = 1;                // [4] my node's ID number
-  std::string toTopic = "fromHead";     // [5] topic I publish
+  std::string toTopic = "fromSource";   // [5] topic name I publish
   
   // NOTE that extra values can be passed by the ROS2 launch system
   if(argc > 5) {
@@ -102,7 +102,7 @@ int main(int argc, char * argv[])
   }
 
   rclcpp::init(argc, argv);
-  rclcpp::spin(std::make_shared<IpcHead>(testDuration, useReliable, pubFreq, myNodeId, toTopic));
+  rclcpp::spin(std::make_shared<IpcSource>(testDuration, useReliable, pubFreq, myNodeId, toTopic));
   rclcpp::shutdown();
   return 0;
 }

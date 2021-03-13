@@ -40,9 +40,9 @@
    and interval timing to the data array before sending the data.
    The following defines where each node should place its data 
 */
-#define HEAD_TS_OFS     (0)     // starting timestamp (from HEAD node)
-#define HEAD_TS_LEN     (8)     // 8-byte timestamp
-#define PREV_TS_OFS     (HEAD_TS_OFS + HEAD_TS_LEN)     // timestamp of previous node (for diff timing)
+#define SOURCE_TS_OFS     (0)     // starting timestamp (from SOURCE node)
+#define SOURCE_TS_LEN     (8)     // 8-byte timestamp
+#define PREV_TS_OFS     (SOURCE_TS_OFS + SOURCE_TS_LEN)     // timestamp of previous node (for diff timing)
 #define PREV_TS_LEN     (8)
 #define TS_IDX_OFS      (PREV_TS_OFS + PREV_TS_LEN)     // index into array of 
 #define TS_IDX_LEN      (4)     // its only 1 byte, but keep 4-byte alignment

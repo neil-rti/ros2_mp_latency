@@ -9,13 +9,13 @@
 using namespace std::chrono_literals;
 using std::placeholders::_1;
 
-class IpcThru : public rclcpp::Node
+class IpcProcess : public rclcpp::Node
 {
   public:
     // TEST node args testDuration, useReliable, myNodeId, fromTopic, toTopic
-    IpcThru(uint32_t testDuration, bool useReliable, uint32_t myNodeId, 
+    IpcProcess(uint32_t testDuration, bool useReliable, uint32_t myNodeId, 
       std::string fromTopic, std::string toTopic)
-    : Node("ipc_node")
+    : Node("ipc_process")
     {
       // init the topic names per the node number
       node_number = myNodeId;
@@ -27,18 +27,18 @@ class IpcThru : public rclcpp::Node
       if(useReliable) {
         publisher_ = this->create_publisher<MP_DATA_TYPE>(toTopic, rclcpp::QoS(1).reliable());
         subscription_ = this->create_subscription<MP_DATA_TYPE>(
-          fromTopic, rclcpp::QoS(1).reliable(), std::bind(&IpcThru::topic_callback, this, _1));
+          fromTopic, rclcpp::QoS(1).reliable(), std::bind(&IpcProcess::topic_callback, this, _1));
       }
       else {
         publisher_ = this->create_publisher<MP_DATA_TYPE>(toTopic, rclcpp::QoS(1).best_effort());
         subscription_ = this->create_subscription<MP_DATA_TYPE>(
-          fromTopic, rclcpp::QoS(1).best_effort(), std::bind(&IpcThru::topic_callback, this, _1));
+          fromTopic, rclcpp::QoS(1).best_effort(), std::bind(&IpcProcess::topic_callback, this, _1));
       }
 
       // create timer to check when to quit
       timer_ = this->create_wall_timer(
           std::chrono::milliseconds(654),
-          std::bind(&IpcThru::timer_callback, this));
+          std::bind(&IpcProcess::timer_callback, this));
 
     }
 
@@ -97,8 +97,8 @@ int main(int argc, char * argv[])
   uint32_t testDuration = 60;           // [1] how long to run the test  (for quitting)
   bool useReliable = false;             // [2] best effort or reliable
   uint32_t myNodeId = 1;                // [3] my node's ID number
-  std::string fromTopic = "fromHead";   // [4] topic I subscribe
-  std::string toTopic = "toTail";       // [5] topic I publish
+  std::string fromTopic = "fromSource"; // [4] topic I subscribe
+  std::string toTopic = "toSink";       // [5] topic I publish
   
   // NOTE that extra values can be passed by the ROS2 launch system
   if(argc > 5) {
@@ -114,7 +114,7 @@ int main(int argc, char * argv[])
   }
 
   rclcpp::init(argc, argv);
-  rclcpp::spin(std::make_shared<IpcThru>(testDuration, useReliable, myNodeId, fromTopic, toTopic));
+  rclcpp::spin(std::make_shared<IpcProcess>(testDuration, useReliable, myNodeId, fromTopic, toTopic));
   rclcpp::shutdown();
   return 0;
 }
