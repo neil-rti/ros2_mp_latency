@@ -1,7 +1,17 @@
-/** --------------------------------------------------------------
- * IpcTestDefs.hpp
- * for IPC test app
- **/
+// Copyright 2021 Real Time Innovations, Inc. (RTI)
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 #ifndef __IPCTEST_HPP__
 #define __IPCTEST_HPP__
 
@@ -52,14 +62,14 @@
 #error MP_DATA_SIZE not defined or unsupported size
 #endif
 
-/* The above test payloads are BYTE ARRAYS; these are used to carry
+/* The above test payloads include BYTE ARRAYS, which we use to carry
    timing information as the data samples make their way through the 
-   test network -- kind of like a 'tracert': each node adds their ID
-   and interval timing to the data array before sending the data.
+   test network -- kind of like a 'tracert': each node adds their 
+   interval timing to the data array before sending the data.
    The following defines where each node should place its data 
 */
-#define SOURCE_TS_OFS     (0)     // starting timestamp (from SOURCE node)
-#define SOURCE_TS_LEN     (8)     // 8-byte timestamp
+#define SOURCE_TS_OFS   (0)     // starting timestamp (from SOURCE node)
+#define SOURCE_TS_LEN   (8)     // 8-byte timestamp
 #define PREV_TS_OFS     (SOURCE_TS_OFS + SOURCE_TS_LEN)     // timestamp of previous node (for diff timing)
 #define PREV_TS_LEN     (8)
 #define TS_IDX_OFS      (PREV_TS_OFS + PREV_TS_LEN)     // index into array of 

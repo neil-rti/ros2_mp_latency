@@ -7,7 +7,7 @@
 
 DDS_BACKENDS='rmw_connextdds rmw_fastrtps_cpp rmw_cyclonedds_cpp'
 F_PUBLISHER_SET='10'
-MSG_SIZE_SUFFIX_SET='100b 1kb 10kb 100kb 500kb'
+MSG_SIZE_SUFFIX_SET='100b 1kb 4kb 10kb 16kb 32kb 60kb 100kb 256kb 500kb'
 QOS_RELIABILITY_SET='BE REL'
 NODE_WORK_COUNT_SET='0'
 TEST_DURATION=10

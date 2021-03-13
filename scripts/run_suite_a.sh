@@ -6,8 +6,8 @@
 # for example (60 + 5) * 3 * 3 * 5 * 2 * 9 = 52650 seconds, or 14.6 hours.
 
 DDS_BACKENDS='rmw_connextdds rmw_fastrtps_cpp rmw_cyclonedds_cpp'
-F_PUBLISHER_SET='1 10 100'
-MSG_SIZE_SUFFIX_SET='100b 1kb 10kb 100kb 500kb'
+F_PUBLISHER_SET='1 10 20'
+MSG_SIZE_SUFFIX_SET='100b 1kb 4kb 10kb 16kb 32kb 60kb 100kb 256kb 500kb 1mb 2mb 4mb 8mb'
 QOS_RELIABILITY_SET='BE REL'
 NODE_WORK_COUNT_SET='0 1 2 3 4 5 10 15 20'
 TEST_DURATION=60
