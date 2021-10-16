@@ -227,7 +227,7 @@ class IpcSink : public rclcpp::Node
         double tVar = 0;
         for (uint32_t j = 0; j < histo_bin_count; j++) {
           if (histo_bins[(j * my_nodes_count) + i]) {
-            tVar += (pow(i - tMean, 2) * histo_bins[(j * my_nodes_count) + i]);
+            tVar += (pow((double)j - tMean, 2) * histo_bins[(j * my_nodes_count) + i]);
           }
         }
         double stdDev = sqrt(tVar / tCnt[i]);
